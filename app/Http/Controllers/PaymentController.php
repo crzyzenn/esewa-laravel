@@ -42,21 +42,24 @@ class PaymentController extends Controller
 
     public function paymentCompleted(Request $request)
     {
-        dd($request->getAll());
-        $response = $this->payment_gateway->verifyPayment([
-            'amt' => $request->get('amt'),
-            'rid' => $request->get('refId'),
-            'pid' => $request->get('oid'),
-        ])->send();
+        return redirect('/?payment-success');
+        // $response = $this->payment_gateway->verifyPayment([
+        //     'amt' => $request->get('amt'),
+        //     'rid' => $request->get('refId'),
+        //     'pid' => $request->get('oid'),
+        // ])->send();
+        
 
 
-        if ($response->isSuccessful()) {
-            // Update your order payment status using $order_id
-            //redirect users to show some congratulations message (To make them feel good)
-        } else {
-            //IF SOMEHOW SOMETHING WENT WRONG INTERNALLY. Redirect users to route with proper message.
-            // return redirect()->route('YOUR_ROUTE')->with('message', 'Your payment has been declined. Please retry.')
-        }
+        // if ($response->isSuccessful()) {
+        //     // Update your order payment status using $order_id
+        //     //redirect users to show some congratulations message (To make them feel good)
+        //     return redirect('/?payment-success');
+        // } else {
+        //     //IF SOMEHOW SOMETHING WENT WRONG INTERNALLY. Redirect users to route with proper message.
+        //     // return redirect()->route('YOUR_ROUTE')->with('message', 'Your payment has been declined. Please retry.')
+        //     return view('failed');
+        // }
     }
 
     public function paymentFailed()
