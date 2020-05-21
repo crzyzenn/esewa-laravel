@@ -15,17 +15,18 @@ class PaymentController extends Controller
         $this->payment_gateway = Omnipay::create('PhpEsewa_Secure');
         $this->payment_gateway->setScd(config('services.esewa.merchant_code'));
         $this->payment_gateway->setTestMode(config('services.esewa.test_mode'));
+        
     }
 
-    public function processPayment()
+    public function processPayment(Request $request)
     {
         try {
             $response = $this->payment_gateway->purchase([
-                'amt' => 10,
+                'amt' => $request->get('amt'),
                 'txAmt' => 0,
                 'psc' => 0,
                 'pdc' => 0,
-                'tAmt' => 10,
+                'tAmt' => $request->get('amt'),
                 'pid' => rand(10, 10000), //Your Purchase Unique ID
                 'su' => route('payment-completed'),
                 'fu' => route('payment-failed'),
@@ -65,6 +66,6 @@ class PaymentController extends Controller
     public function paymentFailed()
     {
         //Redirect user back with payment failed message 
-        return view('failed');
+        return redirect('/?payment-failed');
     }
 }
